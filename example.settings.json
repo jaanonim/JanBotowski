@@ -1,0 +1,12 @@
+{
+    "email": "email@gmail.com",
+    "password": "************",
+    "group_id": "1234567890",
+    "message": [
+        "React here!",
+        "React here 💚"
+    ],
+    "error": [
+        "Unfortunately, too few people reacted 😥"
+    ]
+}

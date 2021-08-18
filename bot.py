@@ -12,7 +12,7 @@ class Bot:
         self.client = None
         self.thread = None
         self.msg_id = None
-        self.settings = json.load(open(SETTING_FILE))
+        self.settings = json.load(open(SETTING_FILE, encoding="utf-8"))
 
     async def _init(self):
 
@@ -33,7 +33,9 @@ class Bot:
             return t
 
     async def _send_message(self):
-        self.msg_id, _ = await self.thread.send_text("Tutaj reagować ❤")
+        self.msg_id, _ = await self.thread.send_text(
+            random.choice(self.settings["message"])
+        )
 
     async def _get_reactions(self):
         async for msg in self.thread.fetch_messages(limit=100):
@@ -43,7 +45,7 @@ class Bot:
     async def _summarize(self):
         users_ids = await self._get_reactions()
         if len(users_ids) < 2:
-            await self.thread.send_text("Niestety za mało osób zareagowalo 😥")
+            await self.thread.send_text(random.choice(self.settings["error"]))
         else:
             random.shuffle(users_ids)
             users_in_thread = await self.client.fetch_users()
