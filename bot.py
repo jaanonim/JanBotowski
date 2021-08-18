@@ -3,15 +3,16 @@ import random
 
 import fbchat
 
+CACHE_FILE = "cache.json"
 SETTING_FILE = "settings.json"
 
 
 class Bot:
-    def __init__(self):
+    def __init__(self, msg_id=None):
         self.session = None
         self.client = None
         self.thread = None
-        self.msg_id = None
+        self.msg_id = msg_id
         self.settings = json.load(open(SETTING_FILE, encoding="utf-8"))
 
     async def _init(self):
@@ -71,6 +72,7 @@ class Bot:
         await self._init()
         await self._send_message()
         await self._logout()
+        return self.msg_id
 
     async def summarize(self):
         await self._init()

@@ -1,3 +1,4 @@
 fbchat-asyncio
 blinker
 PyInquirer
+schedule
