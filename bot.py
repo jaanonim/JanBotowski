@@ -3,6 +3,8 @@ import random
 
 import fbchat
 
+from sorter import improvedOrder
+
 CACHE_FILE = "cache.json"
 SETTING_FILE = "settings.json"
 
@@ -14,6 +16,9 @@ class Bot:
         self.thread = None
         self.msg_id = msg_id
         self.settings = json.load(open(SETTING_FILE, encoding="utf-8"))
+        self.before = json.load(open(CACHE_FILE)).get("before")
+        if self.before == None:
+            self.before = []
 
     async def _init(self):
 
@@ -48,7 +53,8 @@ class Bot:
         if len(users_ids) < 2:
             await self.thread.send_text(random.choice(self.settings["error"]))
         else:
-            random.shuffle(users_ids)
+            users_ids = improvedOrder(users_ids, self.before)
+            self.updateCache(users_ids)
             users_in_thread = await self.client.fetch_users()
             for user_id in users_ids:
                 user_name = "Coś poszło nie tak"
@@ -64,6 +70,15 @@ class Bot:
                         )
                     ],
                 )
+
+    def updateCache(self, users_ids):
+        self.before.append(users_ids)
+        if len(self.before) > self.settings["backtrack"]:
+            self.before.pop(-1)
+        data = json.load(open(CACHE_FILE))
+        data["before"] = self.before
+        with open(CACHE_FILE, "w") as json_file:
+            json.dump(data, json_file)
 
     async def _logout(self):
         await self.session.logout()

@@ -10,5 +10,6 @@
         "Unfortunately, too few people reacted 😥"
     ],
     "time_between_messages": 168,
-    "time_to_react": 24
+    "time_to_react": 24,
+    "backtrack": 4
 }
