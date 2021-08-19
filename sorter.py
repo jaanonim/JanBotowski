@@ -1,7 +1,8 @@
 import random
 
-# this is `working` 
+# this is `working`
 # DO NOT TOUCH !
+
 
 def improvedOrder(now, before):
     data = []
@@ -49,14 +50,29 @@ def _select(names, tables, output, id):
         output.append(names[0])
         return output
 
-    n = random.choice(table)
-    try:
-        index = names.index(n)
-    except:
-        index = 0
-    return _select(names, tables, output, index)
+    while len(table) > 0:
+        n = random.choice(table)
+        try:
+            index = names.index(n)
+        except:
+            table.remove(n)
+            continue
+        else:
+            return _select(names, tables, output, index)
+    return _select(names, tables, output, 0)
 
 
 def _get_weight(item):
     _, table = item
     return len(table)
+
+
+if __name__ == "__main__":
+    before = [
+        ["a", "e", "f", "d", "c"],
+        ["e", "b", "d", "a", "c"],
+        ["f", "c", "b", "a", "e"],
+        ["e", "b", "d"],
+    ]
+    now = ["a", "b", "c", "d"]
+    print(improvedOrder(now, before))
