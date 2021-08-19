@@ -5,8 +5,8 @@ import fbchat
 
 from sorter import improvedOrder
 
-CACHE_FILE = "cache.json"
-SETTING_FILE = "settings.json"
+CACHE_FILE = "data/cache.json"
+SETTING_FILE = "data/settings.json"
 
 
 class Bot:
@@ -16,7 +16,10 @@ class Bot:
         self.thread = None
         self.msg_id = msg_id
         self.settings = json.load(open(SETTING_FILE, encoding="utf-8"))
-        self.before = json.load(open(CACHE_FILE)).get("before")
+        try:
+            self.before = json.load(open(CACHE_FILE)).get("before")
+        except:
+            self.before = None
         if self.before == None:
             self.before = []
 
